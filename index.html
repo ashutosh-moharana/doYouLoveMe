@@ -1,43 +1,71 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Do you LOVE me?</title>
-  <style>
-    body {
-      text-align: center;
-      padding-top: 100px;
-      font-family: Arial, sans-serif;
-    }
-    button {
-      padding: 10px 20px;
-      font-size: 18px;
-      margin: 20px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Do You Like Me?</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .yes {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+        }
+        .no {
+            background-color: #f44336;
+            color: white;
+            border: none;
+        }
+    </style>
 </head>
 <body>
 
-  <h1>Do you LOVE me?</h1>
-  <button id="yesBtn">Yes</button>
-  <button id="noBtn">No</button>
+    <div class="container">
+        <h1>Do you like me?</h1>
+        <button class="yes" onclick="sendResponse('Yes')">Yes</button>
+        <button class="no" onclick="sendResponse('No')">No</button>
+    </div>
 
-  <script>
-    const sendData = (choice) => {
-      fetch('https://script.google.com/macros/s/AKfycbxTxob7VKAtMv3iGXiHZY5Cn-A428WnI2qWmjTjS5t0yZcASwSpxvzIadi7rkCKA6WH4g/exec', {  // Replace with your Apps Script Web App URL
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ choice })  // Send choice as JSON
-      })
-      .then(response => response.json())
-      .then(data => console.log('Response received:', data))
-      .catch(error => console.error('Error:', error));
-    };
+    <script>
+        // Web App URL obtained from Google Apps Script deployment
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzaKLk5bg-wN4sUQH7pWsXaro7AGEZcWc6WBX9SUKOlkjLN8HZVSD4VpczHWGSWgn146Q/exec'; 
 
-    document.getElementById('yesBtn').addEventListener('click', () => sendData('Yes'));
-    document.getElementById('noBtn').addEventListener('click', () => sendData('No'));
-  </script>
+        function sendResponse(response) {
+            // Create a form data object
+            const formData = new FormData();
+            formData.append('response', response);  // Attach the response ('Yes' or 'No')
+
+            // Send data to Google Sheets via Google Apps Script
+            fetch(scriptURL, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => alert("Response recorded!"))
+            .catch(error => alert("Error! Try again."));
+        }
+    </script>
 
 </body>
 </html>
